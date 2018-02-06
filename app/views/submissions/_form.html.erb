@@ -1,0 +1,35 @@
+
+
+<%= form_for(:submission, url: submit_path) do |f| %>
+  <% if submission.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(submission.errors.count, "error") %> prohibited this submission from being saved:</h2>
+
+      <ul>
+      <% submission.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <table class="table table-striped">
+    <tbody>
+      <tr>
+        <td><%= f.label :language %></td>
+        <td>
+          
+          <%= f.select(:language, ['GNU G++ 14 6.4.0', 'Ruby 2.0.0p645'], {}, { :class => 'form-control', :id=>'lan' }) %>
+        </td>
+      </tr>
+      <tr>
+        <td><%= f.label :code %></td>
+        <td><%= f.text_area :code, :class=> 'coding', :value => @contest.code %></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><%= f.submit "Submit", class: "btn btn-primary" %></td>
+      </tr>
+    </tbody>
+  </table>
+
+<% end %>

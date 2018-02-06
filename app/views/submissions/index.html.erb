@@ -1,0 +1,34 @@
+
+<div class="container">
+
+<h1>Submissions</h1>
+
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>When</th>
+      <th>Who</th>
+      <th>Contest</th>
+      <th>Lang</th>
+      <th>Point</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @submissions.each do |submission| %>
+      <tr>
+        <td><%= submission.id.to_s %></td>
+        <td><%= submission.created_at.strftime("%Y-%m-%d %H:%M") %></td>
+        <td><%= User.find(submission.cui.user_id).handle %>
+        <td><%= Contest.find(submission.cui.contest_id).title %>
+        <td><%= submission.language %></td>
+        <td><%= submission.point %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+</div>

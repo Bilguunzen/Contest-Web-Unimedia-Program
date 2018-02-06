@@ -1,0 +1,31 @@
+
+
+<div class="container">
+
+<h1>Rating</h1>
+<hr>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th>Rank</th>
+      <th>Who</th>
+      <th>Contests</th>
+      <th>Points</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% cnt = 1 %>
+    <% @users.each do |user| %>
+      <tr>
+        <td><%= cnt %></td>
+        <td><%= link_to user.handle.to_s, user_path(user.id) %></td>
+        <td><%= Cui.where(user_id: user.id).size %></td>
+        <td><%= user.raiting %></td> 
+      </tr>
+      <% cnt = cnt + 1 %>
+    <% end %>
+  </tbody>
+</table>
+
+</div>

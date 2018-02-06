@@ -1,0 +1,101 @@
+
+<div class="container">
+
+<h1><%= @contest.title %></h1>
+  <div>
+    <table class="table table-striped">
+      <tbody>
+        <tr>
+          <td><strong>Deatline: </strong> </td>
+          <td><%=@contest.deadline.strftime("%Y/%m/%d")%> (<%= get_time(@contest.deadline) %>)</td>
+          <td><strong>Number of Participants: </strong></td>
+          <td><%= Cui.where(contest_id: @contest.id).size %></td>
+        </tr>
+        <tr>
+          <td><strong>Prize: </strong> </td>
+          <td>1st place 120,000 yen<br> 
+              2nd place 600 thousand yen<br>
+              3rd place 300 thousand yen</td>
+          <td><strong>Host /<br> Sponsor: </strong></td>
+          <td><%= image_tag @contest.image.url, :class=>"image" %></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <% if logged_in? && @current_user.admin != 1 %>
+    <hr>
+    <div class="btn-group" id="hello">
+      <%= button_to "Submit Problem", new_submit_path, :method => "get", class: "btn btn-custom-xs" %>
+    </div>
+  <%end%>
+  
+  <hr>
+
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#Details">Details</a></li>
+    <li><a data-toggle="tab" href="#Rank">Rating</a></li>
+    <li><a data-toggle="tab" href="#Submissions">Submissions</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="Details" class="tab-pane fade in active">
+      <h3>About</h3>
+      <p><%= @contest.detail %></p>
+    </div>
+    <div id="Rank" class="tab-pane fade">
+      <% @cuis = Cui.where(contest_id: @contest.id).order('point DESC') %></h1>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>User</th>
+            <th>Point</th>
+            <th>Country</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% cnt = 1 %>
+          <% @cuis.each do |cui| %>
+            <tr>
+              <td><%= cnt %></td>
+              <td><%= link_to User.find(cui.user_id).handle.to_s, user_path(cui.user_id) %></td>
+              <td><%= cui.point %></td>
+              <td>Mongolia</td>
+            </tr>
+            <% cnt = cnt + 1 %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <div id="Submissions" class="tab-pane fade">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>When</th>
+            <th>Who</th>
+            <th>Lang</th>
+            <th>Point</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% Submission.all.order('created_at DESC').each do |submission| %>
+            <% if submission.cui.contest_id == @contest.id %>
+              <tr>
+                <td><%= link_to submission.id.to_s, submission %></td>
+                <td><%= submission.created_at.strftime("%Y-%m-%d %H:%M") %></td>
+                <td><%= User.find(submission.cui.user_id).handle %>
+                <td><%= submission.language %></td>
+                <td><%= submission.point %></td>
+              </tr>
+            <% end %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+</div>

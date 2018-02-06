@@ -1,0 +1,31 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Ios</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Input</th>
+      <th>Output</th>
+      <th>Contest</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @ios.each do |io| %>
+      <tr>
+        <td><%= io.input %></td>
+        <td><%= io.output %></td>
+        <td><%= io.contest_id %></td>
+        <td><%= link_to 'Show', io %></td>
+        <td><%= link_to 'Edit', edit_io_path(io) %></td>
+        <td><%= link_to 'Destroy', io, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Io', new_io_path %>

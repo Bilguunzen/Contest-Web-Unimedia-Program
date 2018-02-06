@@ -1,14 +1,74 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Competition</title>
-  <%= stylesheet_link_tag    "application", media: "all", "data-turbolinks-track" => true %>
-  <%= javascript_include_tag "application", "data-turbolinks-track" => true %>
-  <%= csrf_meta_tags %>
-</head>
-<body>
+  <head>
+    <title>Site</title>
+    <%= csrf_meta_tags %>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-<%= yield %>
+    <link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
 
-</body>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+    <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
+    <%= javascript_include_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+  </head>
+  <body>
+    <div class="bg">
+    <nav class="navbar navbar-inverse navbar-static-top"">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#">Mon Coder</a>
+        </div>
+        <ul class="nav navbar-nav">
+          <li class="<%= 'active' if params[:controller] == 'home' %>"><%= link_to "Home", href="home"%></li>
+          <li class="<%= 'active' if params[:controller] == 'contests' %>"><%= link_to "Contests", contests_path %></li>
+          <li class="<%= 'active' if request.env['PATH_INFO'] == '/users' %>"><%= link_to "Rating", users_path %></li>
+          <li class="<%= 'active' if params[:controller] == 'submissions' %>"><%= link_to "Submissions", href="/submissions" %></li>
+          <li class="<%= 'active' if params[:controller] == 'stats' %>"><%= link_to "Stats", '/stats' %></li>
+          <li class="<%= 'active' if params[:controller] == 'about' %>"><%= link_to "About us", href="about" %></li>
+        </ul>
+        
+        <ul class="nav navbar-nav navbar-right">
+          <% if logged_in? %>
+            <li>
+              <%= link_to current_user do %>
+                <span class="glyphicon glyphicon-user"></span><%= current_user.handle %>
+              <% end %>
+            </li>
+            <li>
+              <%= link_to logout_path, method: :delete do %>
+                <span class="glyphicon glyphicon-log-out"></span>Logout
+              <% end %> 
+            </li>
+          <% else %>
+            <li>
+              <%= link_to new_user_path do %>
+                <span class="glyphicon glyphicon-user"></span>Register
+              <% end %>
+            </li>
+            <li>
+              <%= link_to login_path do %>
+                <span class="glyphicon glyphicon-log-in"></span>Login
+              <% end %> 
+            </li>
+          <% end %>  
+        </ul>
+        <%= form_for :search, url: search_path,:html => {:class => 'navbar-form navbar-right'} do |f| %>
+          <%= f.text_field :value, :class=> "form-control", :placeholder=> "Search" %>
+        <% end %>
+      </div>
+    </nav>
+      <strong class="warning"><%= flash[:danger] %></strong>
+      <%= yield %>
+    </div>
+  </body>
 </html>

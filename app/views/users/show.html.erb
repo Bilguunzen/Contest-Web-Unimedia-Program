@@ -1,0 +1,137 @@
+<div class="container">
+  <h1>My Page</h1>
+  <hr>
+  <ul class="nav nav-tabs">
+    <li class="active"><a data-toggle="tab" href="#Profile">Profile</a></li>
+    <li><a data-toggle="tab" href="#Contests">Contests</a></li>
+    <li><a data-toggle="tab" href="#Submissions">Submissions</a></li>
+  </ul>
+
+  <div class="tab-content">
+    <div id="Profile" class="tab-pane fade in active">
+      <table class="table table-striped">
+        <tr>
+          <td>
+            <%= image_tag 'img.png', :class=>'pimg' %>
+          </td>
+          <td>
+            <p>
+              <strong>Handle:</strong>
+              <%= @user.handle %>
+            </p>
+            <p>
+              <strong>Email:</strong>
+              <%= @user.email %>
+            </p>
+            <p>
+              <strong>Contest Rating:</strong>
+              <%= @user.raiting %>
+            </p>
+            <p>
+              <strong>Number of Contests:</strong>
+              <%= Cui.where(user_id: @user.id).size %>
+            </p>
+            <p>
+              <strong>Last Visited:</strong>
+              <%= @user.updated_at %>
+            </p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+
+          </td>
+        </tr>
+      </table>
+      <div class="row">
+        <div class="col-sm-12">
+          <div id="chart_div"></div>
+        </div>
+      </div>
+    </div>
+    <div id="Contests" class="tab-pane fade">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Contest</th>
+            <th>Rank</th>
+            <th>Point</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <% cnt = 1 %>
+          <% @cuis.each do |cui| %>
+            <tr>
+              <td><%= cnt %></td>
+              <td><%= link_to Contest.find(cui.contest_id).title.to_s, contest_path(cui.contest_id) %></td>
+              <td><%= get_rank(cui) %></td>
+              <td><%= cui.point %></td>
+            </tr>
+            <% cnt = cnt + 1 %>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+    <div id="Submissions" class="tab-pane fade">
+      <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>When</th>
+          <th>Contest</th>
+          <th>Lang</th>
+          <th>Point</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% Submission.all.order('created_at DESC').each do |submission| %>
+          <% if submission.cui.user_id == @user.id %>
+            <tr>
+              <td><%= link_to submission.id.to_s, submission %></td>
+              <td><%= submission.created_at.strftime("%Y-%m-%d %H:%M") %></td>
+              <td><%= Contest.find(submission.cui.contest_id).title %>
+              <td><%= submission.language %></td>
+              <td><%= submission.point %></td>
+            </tr>
+          <% end %>
+        <% end %>
+      </tbody>
+    </table>
+    </div>
+  </div>
+  <h2>Rating</h2>
+  
+
+
+  <script type="text/javascript">
+  google.charts.load('current', {packages: ['corechart', 'line']});
+  google.charts.setOnLoadCallback(drawBasic);
+
+  function drawBasic() {
+    var data = new google.visualization.DataTable();
+    data.addColumn('number', 'X');
+    data.addColumn('number', "<%= @user.handle%>");
+
+    data.addRows([
+      [0, 1500],   [1, 1700],  [2, 1800],  [3, 1750],  [4, 2200],  [5, 3300],
+      [6, 3100],  [7, 3150]
+    ]);
+
+    var options = {
+      hAxis: {
+        title: 'Time by months' 
+      },
+      vAxis: {
+        title: 'Rank'
+      }
+    };
+
+    var chart = new google.visualization.LineChart(document.getElementById('chart_div'));
+
+    chart.draw(data, options);
+  }
+  </script>
+</div>

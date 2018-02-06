@@ -1,0 +1,108 @@
+<div class="container">
+
+<h1>Search : <%= flash[:notice] %> </h1>
+
+<h4>Number of contests found <%=  @running_contests.size + @upcoming_contests.size  + @past_contests.size %></h4>
+
+
+<% if @running_contests.size > 0 %>
+
+
+<h2>Running Contests</h2>
+
+<table  class="table table-striped">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Writer</th>
+      <th>To Finish</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @running_contests.each do |contest| %>
+      <tr>
+        <td><%= link_to contest.title.to_s, contest %></td>
+        <td><%= link_to User.find(contest.admin).handle, user_path(contest.admin) %></td>
+        <td><%= get_time(contest.deadline).to_s %></td>
+        <% if logged_in? && current_user.admin == 1 %>
+          <td><%= link_to 'Edit', edit_contest_path(contest) %></td>
+          <td><%= link_to 'Destroy', contest, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+
+<% end %>
+
+<% if @upcoming_contests.size > 0 %>
+
+
+<h2>Upcoming Contests</h2>
+
+<table  class="table table-striped">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Writer</th>
+      <th>Start</th>
+      <th>End</th>
+      <th>To Start</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @upcoming_contests.each do |contest| %>
+      <tr>
+        <td><%= link_to contest.title.to_s, contest %></td>
+        <td><%= link_to User.find(contest.admin).handle, user_path(contest.admin) %></td>
+        <td><%= contest.start %></td>
+        <td><%= contest.deadline %></td>
+        <td><%= get_time(contest.start).to_s %></td>
+        <% if logged_in? && current_user.admin == 1 %>
+          <td><%= link_to 'Edit', edit_contest_path(contest) %></td>
+          <td><%= link_to 'Destroy', contest, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% end %>
+
+<% if @past_contests.size > 0 %>
+
+
+<h2>Past Contests</h2>
+
+<table  class="table table-striped">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Writer</th>
+      <th>Start</th>
+      <th>End</th>
+      <th colspan="2"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @past_contests.each do |contest| %>
+      <tr>
+        <td><%= link_to contest.title.to_s, contest %></td>
+        <td><%= link_to User.find(contest.admin).handle, user_path(contest.admin) %></td>
+        <td><%= contest.start %></td>
+        <td><%= contest.deadline %></td>
+        <% if logged_in? && current_user.admin == 1 %>
+          <td><%= link_to 'Edit', edit_contest_path(contest) %></td>
+          <td><%= link_to 'Destroy', contest, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<% end %>
+</div>

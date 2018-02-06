@@ -1,0 +1,66 @@
+
+<div class="container">
+<%= form_for @contest, html: { multipart: true } do |form| %>
+  <% if contest.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(contest.errors.count, "error") %> prohibited this contest from being saved:</h2>
+
+      <ul>
+      <% contest.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <table class="table table-striped">
+    <tbody>
+      <tr>
+        <td><%= form.label :title, 'Contest Name' %></td>
+        <td><%= form.text_field :title %></td>
+      </tr>
+      <tr>
+        <td><%= form.label :detail, 'Details' %></td>
+        <td><%= form.text_area :detail, :class=> 'Details' %></td>
+      </tr>
+      <tr>
+        <td><%= form.label :detail, 'Sponsor logo' %></td>
+        <td><%= form.file_field :image, :class=>"form-control-file" %></td>
+      </tr>
+      <tr>
+        <td><%= form.label :prize, 'Contest Prize' %></td>
+        <td><%= form.text_area :prize, :class=>'Prize' %></td>
+      </tr>
+      <tr>
+        <td><%= form.label :start, 'Contest start' %></td>
+        <td><%= form.datetime_select :start %></td>
+      </tr>
+      <tr>
+        <td><%= form.label :deadline, 'Contest end' %></td>
+        <td><%= form.datetime_select :deadline %></td>
+      </tr>
+      <tr>
+        <td><%= form.label :time, 'Time Limit' %></td>
+        <td><%= form.number_field :time , min: '1', step: '0.5' %> second</td>
+      </tr>
+      <tr>
+        <td><%= form.label :point, 'A test point' %></td>
+        <td><%= form.number_field :point , min: '0.1', step: '0.1' %> point</td>
+      </tr>
+      <tr>
+        <td><%= form.label :code, 'Initial code' %></td>
+        <td><%= form.text_area :code, :class=>'Icode' %></td>
+      </tr>
+      <tr>
+        <td>Add IO</td>
+        <td><%= link_to 'Add IO', new_io_path %></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><%= form.submit 'Save', :class=> "btn btn-primary" %></td></td>
+      </tr>
+    </tbody>
+  </table>
+
+    
+<% end %>
+</div>

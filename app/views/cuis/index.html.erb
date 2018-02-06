@@ -1,0 +1,30 @@
+<p id="notice"><%= notice %></p>
+
+<h1><%= Contest.find(params[:id]).title %></h1>
+
+<p>Standings</p>
+
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>User</th>
+      <th>Point</th>
+      <th>Country</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% cnt = 1 %>
+    <% @cuis.each do |cui| %>
+      <tr>
+        <td><%= cnt %></td>
+        <td><%= link_to User.find(cui.user_id).handle.to_s, user_path(cui.user_id) %></td>
+        <td><%= cui.point = 10 %></td>
+        <td>Mongolia</td>
+      </tr>
+      <% cnt = cnt + 1 %>
+    <% end %>
+  </tbody>
+</table>
+<br>

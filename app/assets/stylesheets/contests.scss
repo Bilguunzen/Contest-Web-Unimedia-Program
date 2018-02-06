@@ -1,0 +1,27 @@
+// Place all the styles related to the contests controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+.image {
+  width: auto;
+  height: 100px;
+}
+.Details {
+  width: 300px;
+  height: 300px;
+  overflow: auto;
+  resize: none;
+}
+
+.Prize {
+  width: 300px;
+  height: 150px;
+  overflow: auto;
+  resize: none;
+}
+
+.Icode {
+  width: 400px;
+  height: 300px;
+  overflow: auto;
+  resize: none;
+}

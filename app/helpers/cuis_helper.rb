@@ -1,0 +1,2 @@
+module CuisHelper
+end
